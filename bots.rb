@@ -50,7 +50,7 @@ class CloneBot < Ebooks::Bot
     #  tweet(model.make_statement)
     #end
 
-    scheduler.cron '0 */2 * * *' do
+    scheduler.every '2h' do
       # 80% chance to tweet every 2 hours
       if rand <= 0.8
         tweet(model.make_statement)
