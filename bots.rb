@@ -145,5 +145,5 @@ CloneBot.new(TWITTER_USERNAME) do |bot|
   bot.access_token = OAUTH_TOKEN
   bot.access_token_secret = OAUTH_TOKEN_SECRET
 
-  bot.original = "0xabad1dea"
+  bot.original = TWITTER_USERNAME
 end
