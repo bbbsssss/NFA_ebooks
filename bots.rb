@@ -45,6 +45,8 @@ class CloneBot < Ebooks::Bot
   def on_startup
     load_model!
 
+    tweet(model.make_statement)
+
     #scheduler.cron '0 0 * * *' do
     #  # Each day at midnight, post a single tweet
     #  tweet(model.make_statement)
@@ -73,7 +75,7 @@ class CloneBot < Ebooks::Bot
     end
   end
 
-  def on_timelin(tweet)
+  def on_timeline(tweet)
     return if tweet.retweeted_status?
     return unless can_pester?(tweet.user.screen_name)
 
@@ -85,17 +87,17 @@ class CloneBot < Ebooks::Bot
     delay do
       if very_interesting
         favorite(tweet) if rand < 0.5
-	retweet(tweet) if rand < 0.1
-	if rand < 0.01
-	  userinfo(tweet.user.screen_name).pesters_left -= 1
-	  reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
-	end
-      elsif interesting
-        favorite(tweet) if rand < 0.04
-	if rand < 0.001
-	  userinfo(tweet.user.screen_name).pesters_left -= 1
-	  reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
-	end
+        retweet(tweet) if rand < 0.1
+        if rand < 0.01
+          userinfo(tweet.user.screen_name).pesters_left -= 1
+          reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
+        end
+        elsif interesting
+          favorite(tweet) if rand < 0.04
+          if rand < 0.001
+            userinfo(tweet.user.screen_name).pesters_left -= 1
+            reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
+        end
       end
     end
   end
@@ -132,7 +134,7 @@ class CloneBot < Ebooks::Bot
 
   private
   def load_model!
-    return @model
+    return if @model
 
     @model_path ||= "model/#{original}.model"
 
