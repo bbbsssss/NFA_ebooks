@@ -128,7 +128,7 @@ class CloneBot < Ebooks::Bot
     #else
     #  log "Unfollowing @#{tweet.user.screen_name}"
     #  twitter.unfollow(tweet.user.screen_name)
-    #end
+    end
   end
 
   def on_follow(user)
