@@ -92,14 +92,21 @@ class CloneBot < Ebooks::Bot
           userinfo(tweet.user.screen_name).pesters_left -= 1
           reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
         end
-        elsif interesting
-          favorite(tweet) if rand < 0.04
-          if rand < 0.001
-            userinfo(tweet.user.screen_name).pesters_left -= 1
-            reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
+      elsif interesting
+        favorite(tweet) if rand < 0.05
+        if rand < 0.001
+          userinfo(tweet.user.screen_name).pesters_left -= 1
+          reply(tweet, model.make_response(meta(tweet).mentionless, meta(tweet).limit))
         end
       end
     end
+  end
+
+  # Find information we've collected about a user
+  # @param username [String]
+  # @return [Ebooks::UserInfo]
+  def userinfo(username)
+    @userinfo[username] ||= UserInfo.new(username)
   end
 
   # Check if we're allowed to send unprompted tweets to a user
