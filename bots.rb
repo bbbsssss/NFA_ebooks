@@ -3,15 +3,18 @@ require 'twitter_ebooks'
 require 'dotenv'
 Dotenv.load(".env")
 
+TWITTER_USERNAME = ENV['EBOOKS_TWITTER_USERNAME']
+TEXT_MODEL = ENV['EBOOKS_TEXT_MODEL']
+
 CONSUMER_KEY = ENV['EBOOKS_CONSUMER_KEY'] 
 CONSUMER_SECRET = ENV['EBOOKS_CONSUMER_SECRET']
 OAUTH_TOKEN = ENV['EBOOKS_OAUTH_TOKEN']
 OAUTH_TOKEN_SECRET = ENV['EBOOKS_OAUTH_TOKEN_SECRET']
 
+FREQUENCY = ENV['EBOOKS_FREQUENCY']
+
 BLACKLIST = ['kylelehk', 'friedrichsays', 'Sudieofna', 'tnietzschequote', 'NerdsOnPeriod', 'FSR', 'BafflingQuotes', 'Obey_Nxme']
 DELAY_RANGE = 1..6
-
-TWITTER_USERNAME = "Smith_ebooks"
 
 # Information about a particular Twitter user we know
 class UserInfo
@@ -47,12 +50,7 @@ class CloneBot < Ebooks::Bot
 
     tweet(model.make_statement)
 
-    #scheduler.cron '0 0 * * *' do
-    #  # Each day at midnight, post a single tweet
-    #  tweet(model.make_statement)
-    #end
-
-    scheduler.every '2h' do
+    scheduler.every FREQUENCY do
       # 80% chance to tweet every 2 hours
       if rand <= 0.8
         tweet(model.make_statement)
@@ -154,5 +152,5 @@ CloneBot.new(TWITTER_USERNAME) do |bot|
   bot.access_token = OAUTH_TOKEN
   bot.access_token_secret = OAUTH_TOKEN_SECRET
 
-  bot.original = TWITTER_USERNAME
+  bot.original = TEXT_MODEL
 end
