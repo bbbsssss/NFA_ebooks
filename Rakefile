@@ -1,3 +1,6 @@
+require 'dotenv'
+Dotenv.load(".env")
+
 task :scale_up => :environment do
   heroku = Heroku::API.new
   heroku.post_ps_scale(ENV['EBOOKS_APP_NAME'], 'worker', 1)
