@@ -3,3 +3,4 @@ ruby '2.0.0'
 
 gem 'twitter_ebooks'
 gem 'dotenv'
+gem 'heroku-api'

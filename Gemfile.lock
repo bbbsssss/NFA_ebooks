@@ -10,12 +10,16 @@ GEM
     dotenv (2.0.1)
     engtagger (0.2.0)
     equalizer (0.0.11)
+    excon (0.45.3)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     fast-stemmer (1.0.2)
     gingerice (1.2.2)
       addressable
       awesome_print
+    heroku-api (0.3.23)
+      excon (~> 0.44)
+      multi_json (~> 1.8)
     highscore (1.2.0)
       bloomfilter-rb (>= 2.1.1)
       whatlanguage (>= 1.0.0)
@@ -27,6 +31,7 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.8.2)
+    multi_json (1.11.0)
     multipart-post (2.0.0)
     naught (1.0.0)
     oauth (0.4.7)
@@ -67,4 +72,5 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
+  heroku-api
   twitter_ebooks
