@@ -1,4 +1,4 @@
-# Smith_ebooks
+# NFA_ebooks
 
 Twitter _ebooks bot for Heroku deploy (or not).
 
