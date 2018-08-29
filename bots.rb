@@ -37,6 +37,10 @@ class Ebooks::Model
 end
 
 class GenBot
+  def configure
+    # nothing!
+  end
+
   def initialize(bot, modelname)
     @bot = bot
     @model = nil
