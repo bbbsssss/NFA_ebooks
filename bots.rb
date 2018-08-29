@@ -43,8 +43,8 @@ class NFABot < Ebooks::Bot
 end
 
 NFABot.new("NFA_ebooks") do |bot|
-  bot.access_token = OAUTH_TOKEN
-  bot.access_token_secret = OAUTH_TOKEN_SECRET
+  bot.access_token = ACCESS_TOKEN
+  bot.access_token_secret = ACCESS_TOKEN_SECRET
 
   bot.original = "NFA_ebooks"
 end
