@@ -40,10 +40,10 @@ def entity(text):
 
 def filter_status(text):
     text = re.sub(r'\b(RT|MT) .+', '', text)  # take out anything after RT or MT
-    text = re.sub(r'(\#|@|(h\/t)|(http))\S+', '', text)  # Take out URLs, hashtags, hts, etc.
-    text = re.sub('\s+', ' ', text)  # collaspse consecutive whitespace to single spaces.
+    #text = re.sub(r'(\#|@|(h\/t)|(http))\S+', '', text)  # Take out URLs, hashtags, hts, etc.
+    #text = re.sub('\s+', ' ', text)  # collaspse consecutive whitespace to single spaces.
     text = re.sub(r'\"|\(|\)', '', text)  # take out quotes.
-    text = re.sub(r'\s+\(?(via|says)\s@\w+\)?', '', text)  # remove attribution
+    #text = re.sub(r'\s+\(?(via|says)\s@\w+\)?', '', text)  # remove attribution
     text = re.sub(r'<[^>]*>','', text) #strip out html tags from mastodon posts
     htmlsents = re.findall(r'&\w+;', text)
     for item in htmlsents:
@@ -98,7 +98,7 @@ if __name__ == "__main__":
                     ebook_status = ebook_status
             elif rando == 1:
                 # say something crazy/prophetic in all caps
-                print("ALL THE THINGS")
+                print("IT'S HAPPENING")
                 ebook_status = ebook_status.upper()
 
         # throw out tweets that match anything from the source account.
