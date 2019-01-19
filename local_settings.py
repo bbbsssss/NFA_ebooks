@@ -20,6 +20,6 @@ ODDS = 8  # How often do you want this to run? 1/8 times?
 ORDER = 2  # How closely do you want this to hew to sensical? 2 is low and 4 is high.
 SLEEP = os.environ.get('EBOOKS_SLEEP_S')
 
-DEBUG = True  # Set this to False to start Tweeting live
+DEBUG = False  # Set this to False to start Tweeting live
 TWEET_ACCOUNT = os.environ.get('EBOOKS_TWITTER_USERNAME')  # The name of the account you're tweeting to.
 
