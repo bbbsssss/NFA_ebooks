@@ -34,13 +34,13 @@ class MarkovChainer(object):
 
     def add_text(self, text):
         text = re.sub(r'\n\s*\n/m', ".", text)
-        seps = '([.!?;:] )'
+        seps = '([.!?;:])'
         pieces = re.split(seps, text)
         sentence = ""
         for piece in pieces:
             if piece != "":
                 if re.search(seps, piece):
-                    self.add_sentence(sentence, piece.rstrip())
+                    self.add_sentence(sentence, piece)
                     sentence = ""
                 else:
                     sentence = piece

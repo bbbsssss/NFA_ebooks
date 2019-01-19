@@ -119,3 +119,5 @@ if __name__ == "__main__":
             print("Status is empty, sorry.")
         else:
             print("TOO LONG: " + ebook_status)
+
+	sys.exit()
