@@ -122,4 +122,4 @@ if __name__ == "__main__":
             else:
                 print("TOO LONG: " + ebook_status)
 
-            time.sleep(int(SLEEP))
+        time.sleep(int(SLEEP))
