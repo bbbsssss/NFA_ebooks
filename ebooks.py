@@ -1,6 +1,7 @@
 import random
 import re
 import sys
+import time
 import twitter
 import markov
 from html.entities import name2codepoint as n2c
@@ -52,72 +53,73 @@ def filter_status(text):
     return text
 
 if __name__ == "__main__":
-    order = ORDER
-    guess = 0
-    if ODDS and not DEBUG:
-        guess = random.randint(0, ODDS - 1)
+    while True:
+        order = ORDER
+        guess = 0
+        if ODDS and not DEBUG:
+            guess = random.randint(0, ODDS - 1)
 
-    if guess:
-        print(str(guess) + " No, sorry, not this time.")  # message if the random number fails.
-        sys.exit()
-    else:
-        api = connect()
-        source_statuses = []
-        if STATIC_TEST:
-            file = TEST_SOURCE
-            print(">>> Generating from {0}".format(file))
-            string_list = open(file).readlines()
-            for item in string_list:
-                source_statuses += item.split(",")
-        if len(source_statuses) == 0:
-            print("No statuses found!")
-            sys.exit()
-        mine = markov.MarkovChainer(order)
-        for status in source_statuses:
-            if not re.search('([\.\!\?\"\']$)', status):
-                status += "."
-            mine.add_text(status)
-        for x in range(0, 10):
-            ebook_status = mine.generate_sentence()
-
-        # randomly drop the last word, as Horse_ebooks appears to do.
-        if random.randint(0, 4) == 0 and re.search(r'(in|to|from|for|with|by|our|of|your|around|under|beyond)\s\w+$', ebook_status) is not None:
-            print("Losing last word randomly")
-            ebook_status = re.sub(r'\s\w+.$', '', ebook_status)
-            print(ebook_status)
-
-        # if a tweet is very short, this will randomly add a second sentence to it.
-        if ebook_status is not None and len(ebook_status) < 40:
-            rando = random.randint(0, 10)
-            if rando == 0 or rando == 7:
-                print("Short tweet. Adding another sentence randomly")
-                newer_status = mine.generate_sentence()
-                if newer_status is not None:
-                    ebook_status += " " + mine.generate_sentence()
-                else:
-                    ebook_status = ebook_status
-            elif rando == 1:
-                # say something crazy/prophetic in all caps
-                print("IT'S HAPPENING")
-                ebook_status = ebook_status.upper()
-
-        # throw out tweets that match anything from the source account.
-        if ebook_status is not None and len(ebook_status) < 210:
-            for status in source_statuses:
-                if ebook_status[:-1] not in status:
-                    continue
-                else:
-                    print("TOO SIMILAR: " + ebook_status)
-                    sys.exit()
-
-            if not DEBUG:
-                if ENABLE_TWITTER_POSTING:
-                    status = api.PostUpdate(ebook_status)
-            print(ebook_status)
-
-        elif not ebook_status:
-            print("Status is empty, sorry.")
+        if guess:
+            print(str(guess) + " No, sorry, not this time.")  # message if the random number fails.
         else:
-            print("TOO LONG: " + ebook_status)
+            api = connect()
+            source_statuses = []
+            if STATIC_TEST:
+                file = TEST_SOURCE
+                print(">>> Generating from {0}".format(file))
+                string_list = open(file).readlines()
+                for item in string_list:
+                    source_statuses += item.split(",")
+            if len(source_statuses) == 0:
+                print("No statuses found!")
+                sys.exit()
+            mine = markov.MarkovChainer(order)
+            for status in source_statuses:
+                if not re.search('([\.\!\?\"\']$)', status):
+                    status += "."
+                mine.add_text(status)
+            for x in range(0, 10):
+                ebook_status = mine.generate_sentence()
 
-        sys.exit()
+            # randomly drop the last word, as Horse_ebooks appears to do.
+            if random.randint(0, 4) == 0 and re.search(r'(in|to|from|for|with|by|our|of|your|around|under|beyond)\s\w+$', ebook_status) is not None:
+                print("Losing last word randomly")
+                ebook_status = re.sub(r'\s\w+.$', '', ebook_status)
+                print(ebook_status)
+
+            # if a tweet is very short, this will randomly add a second sentence to it.
+            if ebook_status is not None and len(ebook_status) < 40:
+                rando = random.randint(0, 10)
+                if rando == 0 or rando == 7:
+                    print("Short tweet. Adding another sentence randomly")
+                    newer_status = mine.generate_sentence()
+                    if newer_status is not None:
+                        ebook_status += " " + mine.generate_sentence()
+                    else:
+                        ebook_status = ebook_status
+                elif rando == 1:
+                    # say something crazy/prophetic in all caps
+                    print("IT'S HAPPENING")
+                    ebook_status = ebook_status.upper()
+
+            # throw out tweets that match anything from the source account.
+            if ebook_status is not None and len(ebook_status) < 210:
+                similar = False
+                for status in source_statuses:
+                    if ebook_status[:-1] not in status:
+                        continue
+                    else:
+                        print("TOO SIMILAR: " + ebook_status)
+                        similar = True
+                        break
+                if not similar:
+                    if not DEBUG:
+                        if ENABLE_TWITTER_POSTING:
+                            status = api.PostUpdate(ebook_status)
+                    print(ebook_status)
+            elif not ebook_status:
+                print("Status is empty, sorry.")
+            else:
+                print("TOO LONG: " + ebook_status)
+
+            time.sleep(SLEEP)
